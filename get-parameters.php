@@ -1,28 +1,35 @@
 <?php
   # Retrieve settings from Parameter Store
   error_log('Retrieving settings');
-  require 'aws.phar';
+  require 'vendor/autoload.php'; 
+  // require 'aws.phar';
   
   $az = file_get_contents('http://169.254.169.254/latest/meta-data/placement/availability-zone');
-  $region = substr($az, 0, -1);
-  $ssm_client = new Aws\Ssm\SsmClient([
-     'version' => 'latest',
-     'region'  => $region
+  // $region = substr($az, 0, -1);
+  $region = 'ap-southeast-1';
+  // Create Secrets Manager client
+  $client = new SecretsManagerClient([
+      'version' => 'latest',
+      'region'  => $region
   ]);
-  
+
   try {
-    # Retrieve settings from Parameter Store
-    $result = $ssm_client->GetParametersByPath(['Path' => '/example/', 'WithDecryption' => true]);
+    // Retrieve the secret value
+      $result = $client->getSecretValue([
+          'SecretId' => 'MSRI/CSVC/RDS/MySql'
+      ]);
 
-    # Extract individual parameters
-    foreach($result['Parameters'] as $p) {
-        $values[$p['Name']] = $p['Value'];
-    }
+      if (isset($result['SecretString'])) {
+          $secret = json_decode($result['SecretString'], true);
 
-    $ep = $values['/example/endpoint'];
-    $un = $values['/example/username'];
-    $pw = $values['/example/password'];
-    $db = $values['/example/database'];
+          // Assign secret values
+          $ep = $secret['endpoint'] ?? '';
+          $un = $secret['username'] ?? '';
+          $pw = $secret['password'] ?? '';
+          $db = $secret['database'] ?? '';
+      } else {
+          throw new Exception("SecretString not found");
+      }
   }
   catch (Exception $e) {
     $ep = '';
