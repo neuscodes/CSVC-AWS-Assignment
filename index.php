@@ -52,7 +52,7 @@
 		</div>
 			<table>
 				<tr>
-					<td><figure><img src="Shirley.jpeg" height=auto width="400"><figcaption>Shirley Rodriguez</figcaption></figure></td>
+					<td><figure><img src="Shirley.jpg" height=auto width="400"><figcaption>Shirley Rodriguez</figcaption></figure></td>
 				</tr>	
 					<tr><td><p>Our site got started when Maria Gondalaz found that she was frequently looking up data from a variety of databases. <br>Shirley decided to start sharing some of this data with other social researchers. </p></td>
 				</tr>
