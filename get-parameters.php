@@ -8,7 +8,6 @@
   // require 'aws.phar';
   
   $az = file_get_contents('http://169.254.169.254/latest/meta-data/placement/availability-zone');
-  // $region = substr($az, 0, -1);
   $region = 'ap-southeast-1';
   // Create Secrets Manager client
   $client = new SecretsManagerClient([
@@ -30,16 +29,27 @@
           $un = $secret['username'] ?? '';
           $pw = $secret['password'] ?? '';
           $db = $secret['database'] ?? '';
+
+          $dsn = "mysql:host={$ep};dbname={$db};charset=utf8mb4";
+          $pdo = new PDO($dsn, $un, $pw, [
+              PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+              PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+          ]);
+
+          error_log("Database connection successful");
+
       } else {
           throw new Exception("SecretString not found");
       }
-  }
-  catch (AwsException $e) {
+  } catch (AwsException $e) {
     error_log("Error retrieving secret: " . $e->getMessage());
     $ep = '';
     $db = '';
     $un = '';
     $pw = '';
+  } catch (PDOException $e) {
+      error_log("Database connection failed: " . $e->getMessage());
+      $pdo = null;
   }
 
 ?>
