@@ -2,6 +2,9 @@
   # Retrieve settings from Parameter Store
   error_log('Retrieving settings');
   require 'vendor/autoload.php'; 
+
+  use Aws\SecretsManager\SecretsManagerClient;
+  use Aws\Exception\AwsException;
   // require 'aws.phar';
   
   $az = file_get_contents('http://169.254.169.254/latest/meta-data/placement/availability-zone');
@@ -31,7 +34,7 @@
           throw new Exception("SecretString not found");
       }
   }
-  catch (Exception $e) {
+  catch (AwsException $e) {
     $ep = '';
     $db = '';
     $un = '';
