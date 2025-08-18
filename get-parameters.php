@@ -35,6 +35,7 @@
       }
   }
   catch (AwsException $e) {
+    error_log("Error retrieving secret: " . $e->getMessage());
     $ep = '';
     $db = '';
     $un = '';
