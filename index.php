@@ -1,7 +1,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Example Site;!</title>
+	<title>Lola Social Research Organization - MSRI</title>
 	<link rel="stylesheet" href="css/styles.css">
 </head>
 

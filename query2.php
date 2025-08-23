@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['selection'])) {
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Query Results</title>
+    <title>Query Results - MSRI</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
